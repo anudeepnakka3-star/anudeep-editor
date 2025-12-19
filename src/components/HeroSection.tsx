@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
-import anudeepPhoto from "@/assets/anudeep-photo.png";
+import anudeepPhoto from "@/assets/anudeep-hero.jpg";
 
 const HeroSection = () => {
   const [isPhotoVisible, setIsPhotoVisible] = useState(false);
