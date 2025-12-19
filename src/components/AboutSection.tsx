@@ -9,38 +9,30 @@ const AboutSection = () => {
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-primary font-medium tracking-widest uppercase mb-4">About</p>
           
-          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-8">
+          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-12">
             The Editor Behind the Cuts
           </h2>
           
-          <div className="relative">
-            {/* Quote marks */}
-            <span className="absolute -top-8 -left-4 text-8xl text-primary/20 font-serif">"</span>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed relative z-10">
-              I'm <span className="text-foreground font-medium">Anudeep</span>, a video editor who blends 
-              <span className="text-primary"> speed</span>, 
-              <span className="text-primary"> emotion</span>, and 
-              <span className="text-primary"> storytelling</span> to create videos people finish watching.
+          <div className="space-y-6 text-lg md:text-xl text-muted-foreground leading-relaxed">
+            <p>
+              I'm <span className="text-foreground font-medium">Anudeep</span>, a video editor based in 
+              <span className="text-primary"> Hyderabad, India</span>, currently pursuing a B.Tech in 
+              Computer Science at B V Raju Institute of Technology (BVRIT).
             </p>
             
-            <span className="absolute -bottom-12 -right-4 text-8xl text-primary/20 font-serif">"</span>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-20 pt-12 border-t border-border/50">
-            <div className="text-center">
-              <p className="font-display text-4xl md:text-5xl text-primary mb-2">50+</p>
-              <p className="text-muted-foreground text-sm uppercase tracking-wider">Projects</p>
-            </div>
-            <div className="text-center">
-              <p className="font-display text-4xl md:text-5xl text-primary mb-2">10M+</p>
-              <p className="text-muted-foreground text-sm uppercase tracking-wider">Views</p>
-            </div>
-            <div className="text-center">
-              <p className="font-display text-4xl md:text-5xl text-primary mb-2">3+</p>
-              <p className="text-muted-foreground text-sm uppercase tracking-wider">Years</p>
-            </div>
+            <p>
+              I specialize in <span className="text-primary">story-driven</span> and 
+              <span className="text-primary"> cinematic content</span>, with an editing approach focused on 
+              clarity, emotion, and strong viewer retention. Using modern editing techniques and AI-assisted 
+              tools, I create high-quality visuals efficiently.
+            </p>
+            
+            <p>
+              Whether it's short-form content or creative projects, my goal is to deliver edits that feel 
+              <span className="text-foreground font-medium"> polished</span>, 
+              <span className="text-foreground font-medium"> meaningful</span>, and 
+              <span className="text-foreground font-medium"> engaging</span>.
+            </p>
           </div>
         </div>
       </div>
