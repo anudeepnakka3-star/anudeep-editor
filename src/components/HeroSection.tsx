@@ -6,7 +6,17 @@ import anudeepPhoto from "@/assets/anudeep-hero.jpg";
 
 const HeroSection = () => {
   const [isPhotoVisible, setIsPhotoVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const photoRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,10 +45,13 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Parallax */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100 ease-out"
+        style={{ 
+          backgroundImage: `url(${heroBg})`,
+          transform: `translateY(${scrollY * 0.4}px) scale(1.1)`,
+        }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
