@@ -55,7 +55,6 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='12' r='4' stroke='%23dc2626' stroke-width='1.5'/%3E%3Cline x1='12' y1='0' x2='12' y2='8' stroke='%23dc2626' stroke-width='1' opacity='0.6'/%3E%3Cline x1='12' y1='16' x2='12' y2='24' stroke='%23dc2626' stroke-width='1' opacity='0.6'/%3E%3Cline x1='0' y1='12' x2='8' y2='12' stroke='%23dc2626' stroke-width='1' opacity='0.6'/%3E%3Cline x1='16' y1='12' x2='24' y2='12' stroke='%23dc2626' stroke-width='1' opacity='0.6'/%3E%3Cline x1='3.5' y1='3.5' x2='8.5' y2='8.5' stroke='%23dc2626' stroke-width='1' opacity='0.4'/%3E%3Cline x1='15.5' y1='15.5' x2='20.5' y2='20.5' stroke='%23dc2626' stroke-width='1' opacity='0.4'/%3E%3Cline x1='20.5' y1='3.5' x2='15.5' y2='8.5' stroke='%23dc2626' stroke-width='1' opacity='0.4'/%3E%3Cline x1='8.5' y1='15.5' x2='3.5' y2='20.5' stroke='%23dc2626' stroke-width='1' opacity='0.4'/%3E%3C/svg%3E") 12 12, crosshair;
   }
 
   body {
@@ -63,13 +62,16 @@
     font-family: 'Inter', sans-serif;
   }
 
+  /* Hide default cursor on desktop for custom cursor */
+  @media (pointer: fine) {
+    *, *::before, *::after {
+      cursor: none !important;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 0.05em;
-  }
-
-  a, button {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Ccircle cx='14' cy='14' r='6' fill='%23dc2626' opacity='0.3'/%3E%3Ccircle cx='14' cy='14' r='4' stroke='%23dc2626' stroke-width='2'/%3E%3Cline x1='14' y1='0' x2='14' y2='10' stroke='%23dc2626' stroke-width='1.5' opacity='0.8'/%3E%3Cline x1='14' y1='18' x2='14' y2='28' stroke='%23dc2626' stroke-width='1.5' opacity='0.8'/%3E%3Cline x1='0' y1='14' x2='10' y2='14' stroke='%23dc2626' stroke-width='1.5' opacity='0.8'/%3E%3Cline x1='18' y1='14' x2='28' y2='14' stroke='%23dc2626' stroke-width='1.5' opacity='0.8'/%3E%3Cline x1='4' y1='4' x2='10' y2='10' stroke='%23dc2626' stroke-width='1.5' opacity='0.6'/%3E%3Cline x1='18' y1='18' x2='24' y2='24' stroke='%23dc2626' stroke-width='1.5' opacity='0.6'/%3E%3Cline x1='24' y1='4' x2='18' y2='10' stroke='%23dc2626' stroke-width='1.5' opacity='0.6'/%3E%3Cline x1='10' y1='18' x2='4' y2='24' stroke='%23dc2626' stroke-width='1.5' opacity='0.6'/%3E%3C/svg%3E") 14 14, pointer;
   }
 }
 
