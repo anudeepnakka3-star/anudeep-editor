@@ -110,12 +110,12 @@ const ContactSection = () => {
               <span className="font-medium">WhatsApp</span>
             </a>
             <a
-              href="https://calendly.com"
+              href="https://calendly.com/anudeepnetha3"
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => {
                 e.preventDefault();
-                openExternalInNewTab("https://calendly.com");
+                openExternalInNewTab("https://calendly.com/anudeepnetha3");
               }}
               className="flex items-center justify-center gap-3 px-8 py-3 rounded-full border border-border/40 text-foreground hover:bg-card/50 hover:border-border transition-all duration-300"
             >
