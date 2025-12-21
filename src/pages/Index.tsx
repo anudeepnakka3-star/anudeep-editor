@@ -7,6 +7,7 @@ import ToolsSection from "@/components/ToolsSection";
 import ContactFormSection from "@/components/ContactFormSection";
 import ContactSection from "@/components/ContactSection";
 import CustomCursor from "@/components/CustomCursor";
+import AnimatedSection from "@/components/AnimatedSection";
 
 const Index = () => {
   return (
@@ -14,12 +15,24 @@ const Index = () => {
       <CustomCursor />
       <Navigation />
       <HeroSection />
-      <ShowreelSection />
-      <ServicesSection />
-      <AboutSection />
-      <ToolsSection />
-      <ContactFormSection />
-      <ContactSection />
+      <AnimatedSection>
+        <ShowreelSection />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <ServicesSection />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <AboutSection />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <ToolsSection />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <ContactFormSection />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <ContactSection />
+      </AnimatedSection>
     </div>
   );
 };
