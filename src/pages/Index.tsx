@@ -4,6 +4,7 @@ import ShowreelSection from "@/components/ShowreelSection";
 import ServicesSection from "@/components/ServicesSection";
 import AboutSection from "@/components/AboutSection";
 import ToolsSection from "@/components/ToolsSection";
+import ContactFormSection from "@/components/ContactFormSection";
 import ContactSection from "@/components/ContactSection";
 import CustomCursor from "@/components/CustomCursor";
 
@@ -17,6 +18,7 @@ const Index = () => {
       <ServicesSection />
       <AboutSection />
       <ToolsSection />
+      <ContactFormSection />
       <ContactSection />
     </div>
   );
