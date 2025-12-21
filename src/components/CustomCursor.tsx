@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from 'react';
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const trailPositions = useRef<{ x: number; y: number }[]>([]);
+  const animationRef = useRef<number>();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -22,11 +23,6 @@ const CustomCursor = () => {
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
-      
-      trailPositions.current.push({ x: e.clientX, y: e.clientY });
-      if (trailPositions.current.length > 5) {
-        trailPositions.current.shift();
-      }
     };
 
     const handleMouseEnter = () => setIsVisible(true);
@@ -64,42 +60,55 @@ const CustomCursor = () => {
     };
   }, [isMobile]);
 
+  // Smooth inertia animation
+  useEffect(() => {
+    if (isMobile) return;
+
+    const animate = () => {
+      setSmoothPosition((prev) => ({
+        x: prev.x + (position.x - prev.x) * 0.15,
+        y: prev.y + (position.y - prev.y) * 0.15,
+      }));
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, [position, isMobile]);
+
   if (isMobile || !isVisible) return null;
 
   return (
     <>
-      {/* Subtle trail effect */}
-      {trailPositions.current.map((point, index) => (
-        <div
-          key={index}
-          className="fixed pointer-events-none z-[9998] rounded-full"
-          style={{
-            left: point.x,
-            top: point.y,
-            width: 6,
-            height: 6,
-            opacity: ((index + 1) / trailPositions.current.length) * 0.15,
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'hsl(var(--primary) / 0.4)',
-            filter: 'blur(2px)',
-          }}
-        />
-      ))}
-
-      {/* Main cursor dot */}
+      {/* Outer ring with soft edge / blur effect */}
       <div
-        className="fixed pointer-events-none z-[9999] rounded-full transition-all duration-150 ease-out"
+        className="fixed pointer-events-none z-[9998] rounded-full"
+        style={{
+          left: smoothPosition.x,
+          top: smoothPosition.y,
+          width: isHovering ? 40 : 32,
+          height: isHovering ? 40 : 32,
+          transform: 'translate(-50%, -50%)',
+          border: '1px solid rgba(255, 255, 255, 0.4)',
+          opacity: 0.6,
+          filter: 'blur(0.5px)',
+          transition: 'width 0.2s ease-out, height 0.2s ease-out',
+        }}
+      />
+
+      {/* Inner dot */}
+      <div
+        className="fixed pointer-events-none z-[9999] rounded-full"
         style={{
           left: position.x,
           top: position.y,
-          width: isHovering ? 16 : 8,
-          height: isHovering ? 16 : 8,
+          width: isHovering ? 6 : 4,
+          height: isHovering ? 6 : 4,
           transform: 'translate(-50%, -50%)',
-          backgroundColor: isHovering ? 'hsl(var(--primary))' : 'white',
-          boxShadow: isHovering 
-            ? '0 0 12px hsl(var(--primary) / 0.6), 0 0 24px hsl(var(--primary) / 0.3)' 
-            : '0 0 4px rgba(255, 255, 255, 0.3)',
-          opacity: isHovering ? 0.9 : 0.85,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          transition: 'width 0.15s ease-out, height 0.15s ease-out',
         }}
       />
     </>
