@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import { StaggeredText, StaggeredItem } from "@/components/StaggeredAnimation";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -86,18 +87,22 @@ const ContactFormSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Main Heading */}
         <div className="text-center mb-16">
-          <h2 className="font-display text-5xl md:text-7xl text-foreground mb-4">
-            Contact Form
-          </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground">
-            Let's Work Together
-          </p>
+          <StaggeredText delay={0}>
+            <h2 className="font-display text-5xl md:text-7xl text-foreground mb-4">
+              Contact Form
+            </h2>
+          </StaggeredText>
+          <StaggeredText delay={100}>
+            <p className="text-xl md:text-2xl text-muted-foreground">
+              Let's Work Together
+            </p>
+          </StaggeredText>
         </div>
 
         {/* Form Container */}
         <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+            <StaggeredItem index={0} staggerDelay={100} baseDelay={200}>
               <Input
                 type="text"
                 name="name"
@@ -106,9 +111,9 @@ const ContactFormSection = () => {
                 onChange={handleChange}
                 className="h-14 bg-card/80 border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
               />
-            </div>
+            </StaggeredItem>
             
-            <div>
+            <StaggeredItem index={1} staggerDelay={100} baseDelay={200}>
               <Input
                 type="email"
                 name="email"
@@ -117,9 +122,9 @@ const ContactFormSection = () => {
                 onChange={handleChange}
                 className="h-14 bg-card/80 border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20 transition-all duration-300"
               />
-            </div>
+            </StaggeredItem>
             
-            <div>
+            <StaggeredItem index={2} staggerDelay={100} baseDelay={200}>
               <Textarea
                 name="message"
                 placeholder="Tell me about your project..."
@@ -128,15 +133,17 @@ const ContactFormSection = () => {
                 rows={6}
                 className="bg-card/80 border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20 transition-all duration-300 resize-none"
               />
-            </div>
+            </StaggeredItem>
             
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full h-14 bg-[hsl(45,30%,85%)] hover:bg-[hsl(45,30%,75%)] text-background font-medium text-lg transition-all duration-300"
-            >
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
+            <StaggeredItem index={3} staggerDelay={100} baseDelay={200}>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-14 bg-[hsl(45,30%,85%)] hover:bg-[hsl(45,30%,75%)] text-background font-medium text-lg transition-all duration-300"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </Button>
+            </StaggeredItem>
           </form>
         </div>
       </div>
