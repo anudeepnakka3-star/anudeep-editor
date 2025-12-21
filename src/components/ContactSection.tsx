@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Mail, Instagram, Linkedin, ArrowRight } from "lucide-react";
+import { Mail, Instagram, Linkedin, ArrowRight, Copy, Check } from "lucide-react";
 
 const openExternalInNewTab = (url: string) => {
   try {
@@ -11,6 +12,26 @@ const openExternalInNewTab = (url: string) => {
 };
 
 const ContactSection = () => {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("anudeepnetha3@gmail.com");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = "anudeepnetha3@gmail.com";
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
       {/* Background glow */}
@@ -85,6 +106,13 @@ const ContactSection = () => {
             >
               <Mail className="w-5 h-5" />
             </a>
+            <button
+              onClick={copyEmail}
+              className="w-12 h-12 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+              title="Copy email"
+            >
+              {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>
