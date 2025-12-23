@@ -37,44 +37,44 @@ const Navigation = () => {
     >
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="font-display text-2xl text-foreground hover:text-primary transition-colors">
+        <a href="#" className="glass-nav font-display text-2xl text-foreground hover:text-foreground">
           ANUDEEP
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-2">
           {navItems.map((item) => (
             <button
               key={item.label}
               onClick={() => scrollToSection(item.href)}
-              className="text-sm uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors duration-300"
+              className="glass-nav text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
               {item.label}
             </button>
           ))}
-          <Button variant="outline" size="sm" onClick={() => scrollToSection("#contact")}>
+          <Button variant="hero" size="sm" onClick={() => scrollToSection("#contact")} className="ml-4">
             Hire Me
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-foreground"
+          className="md:hidden glass-icon w-10 h-10 text-foreground"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border/50">
-          <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
+          <div className="container mx-auto px-6 py-6 flex flex-col gap-2">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="text-left text-lg uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors py-2"
+                className="glass-nav text-left text-lg uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors py-2"
               >
                 {item.label}
               </button>
