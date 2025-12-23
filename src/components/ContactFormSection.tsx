@@ -139,7 +139,8 @@ const ContactFormSection = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-14 bg-[hsl(45,30%,85%)] hover:bg-[hsl(45,30%,75%)] text-background font-medium text-lg transition-all duration-300"
+                variant="hero"
+                className="w-full h-14 text-lg"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
