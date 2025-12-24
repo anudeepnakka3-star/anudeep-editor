@@ -73,12 +73,6 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* Hide default cursor on desktop for custom cursor */
-  @media (pointer: fine) {
-    *, *::before, *::after {
-      cursor: none !important;
-    }
-  }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bebas Neue', sans-serif;
