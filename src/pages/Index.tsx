@@ -6,13 +6,11 @@ import AboutSection from "@/components/AboutSection";
 import ToolsSection from "@/components/ToolsSection";
 import ContactFormSection from "@/components/ContactFormSection";
 import ContactSection from "@/components/ContactSection";
-import CustomCursor from "@/components/CustomCursor";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <CustomCursor />
       <Navigation />
       <HeroSection />
       <AnimatedSection>
