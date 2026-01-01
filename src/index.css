@@ -322,6 +322,7 @@
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -335,6 +336,16 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(0 72% 50%);
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Loading Screen Text Fill Animation */
