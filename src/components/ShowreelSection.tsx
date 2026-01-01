@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Play, X, ChevronRight, ChevronLeft } from "lucide-react";
 import { StaggeredText } from "@/components/StaggeredAnimation";
 import {
@@ -84,6 +84,7 @@ const getEmbedUrl = (url: string) => {
 
 const ShowreelSection = () => {
   const [selectedVideo, setSelectedVideo] = useState<typeof videos[0] | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleVideoClick = (video: typeof videos[0]) => {
@@ -93,6 +94,24 @@ const ShowreelSection = () => {
   const handleCloseModal = () => {
     setSelectedVideo(null);
   };
+
+  const updateScrollProgress = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
+      setScrollProgress(progress);
+    }
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', updateScrollProgress);
+      updateScrollProgress();
+      return () => scrollContainer.removeEventListener('scroll', updateScrollProgress);
+    }
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -182,11 +201,14 @@ const ShowreelSection = () => {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Scroll Indicator - Mobile */}
-          <div className="flex md:hidden justify-center mt-4 gap-1">
-            <div className="w-8 h-1 rounded-full bg-primary/60" />
-            <div className="w-2 h-1 rounded-full bg-muted" />
-            <div className="w-2 h-1 rounded-full bg-muted" />
+          {/* Progress Bar */}
+          <div className="mt-6 max-w-md mx-auto">
+            <div className="h-1 bg-muted/30 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full transition-all duration-150 ease-out"
+                style={{ width: `${Math.max(10, scrollProgress)}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
