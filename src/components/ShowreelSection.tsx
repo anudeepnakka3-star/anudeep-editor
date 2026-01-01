@@ -104,15 +104,6 @@ const ShowreelSection = () => {
     }
   };
 
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', updateScrollProgress);
-      updateScrollProgress();
-      return () => scrollContainer.removeEventListener('scroll', updateScrollProgress);
-    }
-  }, []);
-
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const scrollAmount = 340;
@@ -122,6 +113,30 @@ const ShowreelSection = () => {
       });
     }
   };
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', updateScrollProgress);
+      updateScrollProgress();
+      return () => scrollContainer.removeEventListener('scroll', updateScrollProgress);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedVideo) return; // Don't scroll when modal is open
+      
+      if (e.key === 'ArrowLeft') {
+        scroll('left');
+      } else if (e.key === 'ArrowRight') {
+        scroll('right');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedVideo]);
 
   return (
     <section id="showreel" className="py-16 md:py-24 bg-background relative overflow-hidden">
