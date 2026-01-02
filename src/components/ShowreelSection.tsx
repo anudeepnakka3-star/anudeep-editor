@@ -85,7 +85,9 @@ const getEmbedUrl = (url: string) => {
 const ShowreelSection = () => {
   const [selectedVideo, setSelectedVideo] = useState<typeof videos[0] | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const handleVideoClick = (video: typeof videos[0]) => {
     setSelectedVideo(video);
@@ -103,6 +105,73 @@ const ShowreelSection = () => {
       setScrollProgress(progress);
     }
   };
+
+  const scrollToProgress = (progressPercent: number) => {
+    if (scrollRef.current) {
+      const { scrollWidth, clientWidth } = scrollRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      const targetScroll = (progressPercent / 100) * maxScroll;
+      scrollRef.current.scrollLeft = targetScroll;
+    }
+  };
+
+  const handleProgressBarInteraction = (clientX: number) => {
+    if (progressBarRef.current) {
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      scrollToProgress(percentage);
+    }
+  };
+
+  const handleProgressBarMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    handleProgressBarInteraction(e.clientX);
+  };
+
+  const handleProgressBarTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    handleProgressBarInteraction(e.touches[0].clientX);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        handleProgressBarInteraction(e.clientX);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isDragging) {
+        e.preventDefault();
+        handleProgressBarInteraction(e.touches[0].clientX);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('touchend', handleTouchEnd);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isDragging]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -216,12 +285,22 @@ const ShowreelSection = () => {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Progress Bar */}
+          {/* Progress Bar - Draggable Scrubber */}
           <div className="mt-6 max-w-md mx-auto">
-            <div className="h-1 bg-muted/30 rounded-full overflow-hidden">
+            <div 
+              ref={progressBarRef}
+              onMouseDown={handleProgressBarMouseDown}
+              onTouchStart={handleProgressBarTouchStart}
+              className="h-2 bg-muted/30 rounded-full overflow-visible relative cursor-grab active:cursor-grabbing select-none"
+            >
               <div 
-                className="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full transition-all duration-150 ease-out"
+                className="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full"
                 style={{ width: `${Math.max(10, scrollProgress)}%` }}
+              />
+              {/* Drag Handle */}
+              <div 
+                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-lg shadow-primary/30 transition-transform hover:scale-125"
+                style={{ left: `calc(${Math.max(2, Math.min(98, scrollProgress))}% - 8px)` }}
               />
             </div>
           </div>
