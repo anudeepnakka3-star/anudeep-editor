@@ -1,6 +1,6 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "https://esm.sh/resend@2.0.0";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,7 +16,6 @@ const contactSchema = z.object({
 });
 
 // Simple in-memory rate limiting (per edge function instance)
-// For distributed rate limiting, use a database-backed approach
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 const RATE_LIMIT_MAX_REQUESTS = 5; // 5 requests per hour per IP
@@ -26,7 +25,6 @@ function checkRateLimit(identifier: string): { allowed: boolean; remaining: numb
   const record = rateLimitMap.get(identifier);
 
   if (!record || now > record.resetTime) {
-    // Reset or create new record
     rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
     return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
   }
@@ -40,7 +38,6 @@ function checkRateLimit(identifier: string): { allowed: boolean; remaining: numb
 }
 
 function getClientIP(req: Request): string {
-  // Try various headers for client IP
   const forwarded = req.headers.get("x-forwarded-for");
   if (forwarded) {
     return forwarded.split(",")[0].trim();
@@ -110,48 +107,45 @@ serve(async (req) => {
 
     const { name, email, message } = result.data;
 
-    // Get EmailJS credentials from environment
-    const serviceId = Deno.env.get("EMAILJS_SERVICE_ID");
-    const templateId = Deno.env.get("EMAILJS_TEMPLATE_ID");
-    const publicKey = Deno.env.get("EMAILJS_PUBLIC_KEY");
+    // Get Resend API key from environment
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
-    if (!serviceId || !templateId || !publicKey) {
-      console.error("Missing EmailJS credentials");
+    if (!resendApiKey) {
+      console.error("Missing RESEND_API_KEY");
       return new Response(
         JSON.stringify({ error: "Email service not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Send email via EmailJS API
-    const emailResponse = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        service_id: serviceId,
-        template_id: templateId,
-        user_id: publicKey,
-        template_params: {
-          from_name: name,
-          from_email: email,
-          message: message,
-          to_name: "Anudeep",
-        },
-      }),
+    const resend = new Resend(resendApiKey);
+
+    // Send email via Resend
+    const { data, error } = await resend.emails.send({
+      from: "Contact Form <onboarding@resend.dev>",
+      to: ["anudeepnetha3@gmail.com"],
+      subject: `New Contact Form Submission from ${name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p style="color: #666; font-size: 12px;">This message was sent from your portfolio contact form.</p>
+      `,
+      reply_to: email,
     });
 
-    if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      console.error("EmailJS API error:", emailResponse.status, errorText);
+    if (error) {
+      console.error("Resend API error:", error);
       return new Response(
         JSON.stringify({ error: "Failed to send email" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log(`Email sent successfully for: ${email} (IP: ${clientIP}, remaining: ${remaining})`);
+    console.log(`Email sent successfully for: ${email} (IP: ${clientIP}, remaining: ${remaining}, id: ${data?.id})`);
 
     return new Response(
       JSON.stringify({ success: true }),
