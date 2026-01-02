@@ -18,6 +18,7 @@ const ContactFormSection = () => {
     name: "",
     email: "",
     message: "",
+    website: "", // Honeypot field for bot protection
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -64,6 +65,7 @@ const ContactFormSection = () => {
           name: result.data.name,
           email: result.data.email,
           message: result.data.message,
+          website: formData.website, // Honeypot field
         },
       });
 
@@ -78,7 +80,7 @@ const ContactFormSection = () => {
       });
 
       // Clear form
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", website: "" });
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
@@ -118,6 +120,24 @@ const ContactFormSection = () => {
         {/* Form Container */}
         <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot field - hidden from users, catches bots */}
+            <input
+              type="text"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ 
+                position: 'absolute', 
+                left: '-9999px', 
+                opacity: 0, 
+                height: 0, 
+                width: 0,
+                pointerEvents: 'none'
+              }}
+            />
             <StaggeredItem index={0} staggerDelay={100} baseDelay={200}>
               <Input
                 type="text"
