@@ -7,10 +7,12 @@ import ToolsSection from "@/components/ToolsSection";
 import ContactFormSection from "@/components/ContactFormSection";
 import ContactSection from "@/components/ContactSection";
 import AnimatedSection from "@/components/AnimatedSection";
+import MobileExperienceNotice from "@/components/MobileExperienceNotice";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <MobileExperienceNotice />
       <Navigation />
       <HeroSection />
       <AnimatedSection>
