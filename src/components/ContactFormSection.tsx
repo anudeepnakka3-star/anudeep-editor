@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { StaggeredText, StaggeredItem } from "@/components/StaggeredAnimation";
-import emailjs from "@emailjs/browser";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -59,18 +58,19 @@ const ContactFormSection = () => {
 
       if (error) throw error;
 
-      // Send email via EmailJS
-      await emailjs.send(
-        "service_9ijd7v9",
-        "template_an3fcqq",
-        {
-          from_name: result.data.name,
-          from_email: result.data.email,
+      // Send email via Edge Function (credentials are now server-side)
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
           message: result.data.message,
-          to_name: "Anudeep",
         },
-        "2j_sKzQRa3mc-lUkW"
-      );
+      });
+
+      if (emailError) {
+        console.error("Email sending error:", emailError);
+        // Don't throw - form was still saved to database
+      }
 
       toast({
         title: "Message Sent!",
