@@ -57,6 +57,13 @@ const videos = [
     url: "https://youtu.be/eJZ1sUOpwoA", 
     isShort: false 
   },
+  { 
+    id: 8, 
+    title: "Creative Edit", 
+    subtitle: "Dynamic visual storytelling with motion graphics",
+    url: "https://youtube.com/shorts/5wTPCYRCkuU", 
+    isShort: true 
+  },
 ];
 
 const getVideoId = (url: string) => {
