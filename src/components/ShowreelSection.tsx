@@ -64,6 +64,13 @@ const videos = [
     url: "https://youtube.com/shorts/5wTPCYRCkuU", 
     isShort: true 
   },
+  { 
+    id: 9, 
+    title: "Typography Edit", 
+    subtitle: "Kinetic typography and text animations",
+    url: "https://youtu.be/o8pF4uWsnu0", 
+    isShort: false 
+  },
 ];
 
 const getVideoId = (url: string) => {
