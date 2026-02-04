@@ -71,6 +71,13 @@ const videos = [
     url: "https://youtu.be/o8pF4uWsnu0", 
     isShort: false 
   },
+  { 
+    id: 10, 
+    title: "Event Recap", 
+    subtitle: "Dynamic event highlights and coverage",
+    url: "https://youtube.com/shorts/--Ab4Nk8300", 
+    isShort: true 
+  },
 ];
 
 const getVideoId = (url: string) => {
