@@ -78,6 +78,13 @@ const videos = [
     url: "https://youtube.com/shorts/--Ab4Nk8300", 
     isShort: true 
   },
+  { 
+    id: 11, 
+    title: "New Project", 
+    subtitle: "Latest creative work showcase",
+    url: "https://youtu.be/be2qBIJ-vVw", 
+    isShort: false 
+  },
 ];
 
 const getVideoId = (url: string) => {
